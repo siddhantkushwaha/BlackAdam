@@ -2,6 +2,7 @@ import os
 
 from pydub import AudioSegment
 
+import params
 from fingerprint import process
 from recognize import get_matches
 
@@ -29,10 +30,11 @@ def learn(db: Database, audio_segment: AudioSegment, sname: str):
 
 
 if __name__ == '__main__':
-    db = Database()
+    db_url = f"{params.db_config['engine']}{params.db_config['path']}"
+    songs_dir = params.data_path
 
-    songs_dir = 'data'
-    songs = [(os.path.join(songs_dir, name), name) for name in os.listdir(songs_dir)]
+    db = Database(engine_url=db_url)
+    songs = [(os.path.join(songs_dir, name), name) for name in os.listdir(songs_dir) if name.endswith('.mp4')]
     for pt, name in songs:
         print(f'Learning: {name}')
         audio_file = AudioSegment.from_mp3(pt)

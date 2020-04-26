@@ -1,14 +1,10 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from params import db_config
-
 
 class Database:
 
-    def __init__(self):
-        engine_url = f"{db_config['engine']}{db_config['path']}"
-
+    def __init__(self, engine_url):
         self.engine_ = create_engine(engine_url)
         self.session_ = sessionmaker(bind=self.engine)()
 
