@@ -11,5 +11,5 @@ def clear(engine_url):
 
 
 if __name__ == '__main__':
-    engine_url = params.data_path
-    clear(engine_url)
+    db_url = f"{params.db_config['engine']}{params.db_config['path']}"
+    clear(db_url)
