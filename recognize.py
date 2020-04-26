@@ -19,6 +19,9 @@ def get_matches(db: Database, fingerprints):
     for item in result:
         count[item[0]] = count.get(item[0], 0) + 1
 
+    if len(count) == 0:
+        return None, 0
+
     closes_match_song_id = max(count, key=lambda key: count[key])
     match_ratio = count[closes_match_song_id] / len(hashes)
 

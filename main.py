@@ -1,4 +1,5 @@
 import os
+import subprocess
 
 from pydub import AudioSegment
 
@@ -34,8 +35,17 @@ if __name__ == '__main__':
     songs_dir = params.data_path
 
     db = Database(engine_url=db_url)
-    songs = [(os.path.join(songs_dir, name), name) for name in os.listdir(songs_dir) if name.endswith('.mp4')]
+    songs = [(os.path.join(songs_dir, name), name) for name in os.listdir(songs_dir)]
     for pt, name in songs:
-        print(f'Learning: {name}')
-        audio_file = AudioSegment.from_mp3(pt)
-        learn(db, audio_file, name)
+        if name.endswith('.mp4'):
+            print(f'Converting: {pt}')
+            subprocess.call([
+                'ffmpeg', '-i', pt, pt.replace('.mp4', '.mp3')
+            ])
+            os.remove(pt)
+            name = name.replace('.mp4', '.mp3')
+            pt = os.path.join(songs_dir, name)
+        if name.endswith('.mp3'):
+            print(f'Learning: {pt}')
+            audio_file = AudioSegment.from_mp3(pt)
+            learn(db, audio_file, name)
