@@ -1,2 +1,2 @@
-# blackadam
+# BlackAdam
 Music fingerprinting and retrieval.
